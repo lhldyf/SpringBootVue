@@ -1,4 +1,4 @@
-#SpringBootVue QuickStart
+# SpringBootVue QuickStart
 
 1. git clone
 2. build frontend
