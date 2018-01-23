@@ -7,6 +7,7 @@ import store from './store/'
 import {routerMode} from './config/env'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import './assets/css/common.css'
 
 Vue.use(ElementUI)
 Vue.use(VueRouter)
@@ -19,7 +20,6 @@ const router = new VueRouter({
 
 Vue.config.productionTip = false
 
-/* eslint-disable no-new */
 new Vue({
   router,
   store,

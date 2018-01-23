@@ -24,22 +24,31 @@
         <el-button type="primary" @click="query">查询</el-button>
       </el-form-item>
 
+      <el-form-item>
+        <el-button type="primary" @click="ADD_USER_DIALOG(true)">新增</el-button>
+      </el-form-item>
+
     </el-form>
+
+    <create-form></create-form>
   </div>
 </template>
 
 
 <script>
-  import {mapMutations, mapActions} from 'vuex'
+  import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
+  import CreateForm from './CreateForm'
 
   export default {
+
+    components: {CreateForm},
+
     data() {
       return {
         queryForm: {
           userId: '',
           userName: ''
         },
-        createUserDialogVisible: false,
         sexOptions: [
           {
             value: 'female',
@@ -59,7 +68,9 @@
       ...mapActions([
         'getUserList' // 将vuex的getUserList方法提供给this
       ]),
-
+      ...mapMutations([
+        'ADD_USER_DIALOG'
+      ]),
       query: function() {
         this.getUserList(this.queryForm); // 触发查询
       }
