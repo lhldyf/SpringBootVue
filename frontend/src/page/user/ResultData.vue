@@ -23,7 +23,7 @@
     },
     props: ['sex'], // 父组件传值
     computed: {
-      ...mapGetters([
+      ...mapGetters('user', [
         'userListData',  // vuex.userListData --> this.userListData
         'userPageSize',
         'userPageCount',
@@ -31,7 +31,7 @@
       ]),
     },
     methods: {
-      ...mapActions([
+      ...mapActions('user', [
         'handleSizeChange','handleCurrentChange'
       ]),
       formatSex(row, column, cellValue) {

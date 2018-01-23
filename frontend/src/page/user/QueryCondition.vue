@@ -65,10 +65,10 @@
       this.query();
     },
     methods: {
-      ...mapActions([
+      ...mapActions('user', [
         'getUserList' // 将vuex的getUserList方法提供给this
       ]),
-      ...mapMutations([
+      ...mapMutations('user', [
         'ADD_USER_DIALOG'
       ]),
       query: function() {
