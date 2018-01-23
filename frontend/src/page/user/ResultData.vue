@@ -24,7 +24,7 @@
     props: ['sex'], // 父组件传值
     computed: {
       ...mapGetters([
-        'userListData',
+        'userListData',  // vuex.userListData --> this.userListData
         'userPageSize',
         'userPageCount',
         'userCurrentPage'

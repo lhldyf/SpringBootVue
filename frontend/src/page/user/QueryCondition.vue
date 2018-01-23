@@ -10,6 +10,16 @@
         <el-input placeholder="请输入用户名" v-model="queryForm.userName" type="text"></el-input>
       </el-form-item>
 
+      <el-form-item label="性别" prop="sex">
+        <el-select v-model="queryForm.sex">
+          <el-option v-for="item in sexOptions"
+                     :key="item.value"
+                     :label="item.label"
+                     :value="item.value" >
+          </el-option>
+        </el-select>
+      </el-form-item>
+
       <el-form-item>
         <el-button type="primary" @click="query">查询</el-button>
       </el-form-item>
@@ -29,7 +39,17 @@
           userId: '',
           userName: ''
         },
-        createUserDialogVisible: false
+        createUserDialogVisible: false,
+        sexOptions: [
+          {
+            value: 'female',
+            label: '女'
+          },
+          {
+            value: 'male',
+            label: '男'
+          }
+        ]
       }
     },
     mounted(){
