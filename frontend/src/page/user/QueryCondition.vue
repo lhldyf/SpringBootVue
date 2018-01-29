@@ -2,15 +2,15 @@
   <div>
     <el-form :inline="true" :model="queryForm" label-width="100px" >
 
-      <el-form-item label="用户id" prop="userId">
+      <el-form-item label="用户id">
         <el-input placeholder="请输入用户id" v-model="queryForm.userId" type="text" :maxlength="11"></el-input>
       </el-form-item>
 
-      <el-form-item label="用户名" prop="userName">
+      <el-form-item label="用户名">
         <el-input placeholder="请输入用户名" v-model="queryForm.userName" type="text"></el-input>
       </el-form-item>
 
-      <el-form-item label="性别" prop="sex">
+      <el-form-item label="性别">
         <el-select v-model="queryForm.sex">
           <el-option v-for="item in sexOptions"
                      :key="item.value"
@@ -25,29 +25,25 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button type="primary" @click="ADD_USER_DIALOG(true)">新增</el-button>
+        <el-button type="primary" @click="setVisibleDialog(CREATE_DIALOG)">新增</el-button>
       </el-form-item>
 
     </el-form>
-
-    <create-form></create-form>
   </div>
 </template>
 
 
 <script>
+
   import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
-  import CreateForm from './CreateForm'
+  import {USER} from '@/config/consts'
 
   export default {
-
-    components: {CreateForm},
 
     data() {
       return {
         queryForm: {
-          userId: '',
-          userName: ''
+
         },
         sexOptions: [
           {
@@ -58,21 +54,22 @@
             value: 'male',
             label: '男'
           }
-        ]
+        ],
+        CREATE_DIALOG: USER.DIALOG.CREATE
       }
     },
     mounted(){
-      this.query();
+      this.query(); // 页面加载时触发查询
     },
     methods: {
       ...mapActions('user', [
-        'getUserList' // 将vuex的getUserList方法提供给this
+        'queryList' // 将vuex的queryList方法映射给this
       ]),
       ...mapMutations('user', [
-        'ADD_USER_DIALOG'
+        'setVisibleDialog'
       ]),
       query: function() {
-        this.getUserList(this.queryForm); // 触发查询
+        this.queryList(this.queryForm);
       }
     }
   }

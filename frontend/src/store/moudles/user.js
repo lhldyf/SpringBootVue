@@ -1,88 +1,107 @@
 import * as types from '../mutation-types'
-import {queryUserList, createUser} from "../../service/getData";
+import {
+  queryUserList,
+  createUser,
+  modifyUser
+} from "../../service/getData";
 import {showSuccessMsg, showSuccessMessage, showFailMsg} from "../../config/show";
-
+import {USER} from '@/config/consts'
 
 // 组件间传递变量定义
 const state = {
-  userQueryForm: {},
-  userListResult: {},
-  createUserDialogVisible: false
+  queryForm: {},
+  listResult: {},
+  visibleDialog: '',
+  modifyData: {
+    sex: {
+
+    }
+  }
 }
 
 // getter方法
 const getters = {
-  userListData: state => state.userListResult.users,
-  userCurrentPage: state => {
-    if(null != state.userListResult.page) {
-      return state.userListResult.page.currentPage;
+  listData: state => state.listResult.users,
+  currentPage: state => {
+    if(null != state.listResult.page) {
+      return state.listResult.page.currentPage;
     } else {
       return 0;
     }
   },
-  userPageSize: state => {
-    if(null != state.userListResult.page) {
-      return state.userListResult.page.pageSize;
+  pageSize: state => {
+    if(null != state.listResult.page) {
+      return state.listResult.page.currentPage;
     } else {
       return 0;
     }
   },
-  userPageCount: state => {
-    if(null != state.userListResult.page) {
-      return state.userListResult.page.count;
+  pageCount: state => {
+    if(null != state.listResult.page) {
+      return state.listResult.page.count;
     } else {
       return 0;
     }
-  },
-  createUserDialogVisible: state => state.createUserDialogVisible
+  }
 }
 
 
 // 异步操作只能通过actions
 const actions = {
-  getUserList ({commit}, queryForm) {
-    commit(types.USER_LIST_QUERY_FORM, queryForm);
-
+  queryList ({commit}, queryForm) {
+    commit('setQueryForm', queryForm);
     // 第一个参数为请求参数，第二个参数为callback
-    queryUserList(state.userQueryForm, userListResult => {
-      console.debug(JSON.stringify(userListResult));
-      commit(types.USER_LIST, userListResult);
+    queryUserList(state.queryForm, result => {
+      commit('setListResult', result);
     })
   },
   handleSizeChange({dispatch},pageSize) {
-    console.debug("pageSize:"+pageSize);
     // actions之间的调用使用dispatch('actionName')
-    dispatch('getUserList', {pageSize});
+    dispatch('queryList', {pageSize});
   },
   handleCurrentChange({dispatch}, currentPage) {
-    console.debug("currentPage:"+currentPage);
-    dispatch('getUserList', {currentPage});
+    dispatch('queryList', {currentPage});
   },
-  createUser({dispatch}, createUserForm) {
-    createUser(createUserForm, result => {
-      console.debug(JSON.stringify(result));
+  create({dispatch, commit}, createForm) {
+    createUser(createForm, result => {
       if(result.success) {
-        showSuccessMessage(this, '用户创建成功');
+        commit('invisibleDialog');
+        showSuccessMsg('用户创建成功');
       } else {
-        let msg = '用户创建失败';
-        showSuccessMsg(msg);
+        showFailMsg('用户创建失败')
       }
-      dispatch('getUserList');
+      dispatch('queryList');
     })
-  }
+  },
+  modifyUser({dispatch, commit}, modifyForm) {
+    modifyUser(modifyForm, result => {
+      if(result.success) {
+        commit('invisibleDialog');
+        showSuccessMsg('用户修改成功');
+      } else {
+        showFailMsg('用户创建失败')
+      }
+      dispatch('queryList');
+    })
+  },
 }
 
 // 理解为setter方法
 const mutations = {
-  [types.USER_LIST](state, userListResult) {
-    state.userListResult = userListResult;
+  setListResult(state, result) {
+    state.listResult = result;
   },
-  [types.USER_LIST_QUERY_FORM](state, queryForm) {
-    state.userQueryForm = {...state.userQueryForm, ...queryForm};
-    console.debug("after commit(types.USER_LIST_QUERY_FORM) result:"+JSON.stringify(state.userQueryForm));
+  setQueryForm(state, queryForm) {
+    state.queryForm = {...state.queryForm, ...queryForm};
   },
-  [types.ADD_USER_DIALOG](state, visible) {
-    state.createUserDialogVisible = visible;
+  setVisibleDialog(state, dialogName) {
+    state.visibleDialog = dialogName;
+  },
+  setModifyData(state, modifyData) {
+    state.modifyData = modifyData;
+  },
+  invisibleDialog(state) {
+    state.visibleDialog = USER.DIALOG.NONE;
   }
 }
 

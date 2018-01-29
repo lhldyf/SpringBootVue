@@ -1,12 +1,15 @@
-import {postApi} from '../config/axiosUtils'
+// import {postApi} from '../config/axiosUtils'
 import * as urls from '../config/urlConsts'
+import {postApi} from './mockGetData'
 
 export const queryUserList = ( request, callback ) => {
-  console.debug("query user list param: " + JSON.stringify(request));
   postApi(urls.QUERY_USER_LIST, request, callback);
 };
 
 export const createUser = (request, callback) => {
-  console.debug('create user param: ' +JSON.stringify(request) );
   postApi(urls.CREATE_USER, request, callback);
+}
+
+export const modifyUser = (request, callback) => {
+  postApi(urls.MODIFY_USER, request, callback);
 }
