@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,43 +20,78 @@ public class SampleController {
 		return "Hello World!";
 	}
 
-	@RequestMapping("/users")
-	@ResponseBody UserResult users(@RequestBody User condition) {
-		System.out.println("query users");
-		return addUser(condition);
-	}
-
-	@RequestMapping("/clearUsers")
-	@ResponseBody String clearUsers() {
-		System.out.println("clear users");
-		users = new ArrayList<User>();
-		return "OK";
-	}
-
-
-	private UserResult addUser(User condition) {
+	@RequestMapping("/user/list")
+	@ResponseBody UserResult queryList(@RequestBody User condition) {
 		UserResult result = new UserResult();
-		int count = users.size();
-		int id = count+1;
+		List<User> tempUsers = new ArrayList<User>();
+		for( User user: users) {
+			if(0 != condition.getUserId() ) {
+				if(user.getUserId() == condition.getUserId()) {
+					tempUsers.add(user);
+				}
+			} else {
+				tempUsers.add(user);
+			}
+		}
+
+		List<User> resultUsers = new ArrayList<User>();
+		for( User user: tempUsers) {
+			if(null != condition.getSex() && !"".equals(condition.getSex())) {
+				if(condition.getSex().equals(user.getSex())) {
+					resultUsers.add(user);
+				}
+			} else {
+				resultUsers.add(user);
+			}
+		}
+
+		int count = resultUsers.size();
 		int currentPage = condition.getCurrentPage();
 		int pageSize = condition.getPageSize();
 		if((currentPage-1)*pageSize > count) {
 			// 只有一页时，只展示第一页
 			currentPage = 1;
 		}
-		User user = new User(id, "lhldyf"+id, "罗辉"+id, id, "male");
-		users.add(user);
 		List<User> resultList = new ArrayList<User>();
-		for( int i = users.size() - (currentPage-1)*pageSize -1 , j = pageSize-1 ; i >= 0 && j >=0 ; i--, j--) {
-			resultList.add(users.get(i));
+		for( int i = resultUsers.size() - (currentPage-1)*pageSize -1 , j = pageSize-1 ; i >= 0 && j >=0 ; i--, j--) {
+			resultList.add(resultUsers.get(i));
 		}
 		Page page = new Page();
-		page.setCount(count+1);
+		page.setCount(count);
 		page.setCurrentPage(currentPage);
 		page.setPageSize(pageSize);
 		result.setPage(page);
 		result.setUsers(resultList);
 		return result;
+	}
+
+	@RequestMapping("/user/create")
+	@ResponseBody Result create(@RequestBody User user) {
+		user.setUserId(users.size()+1);
+		users.add(user);
+		return new Result();
+	}
+
+	@RequestMapping("/user/modify")
+	@ResponseBody Result modify(@RequestBody User user) {
+		for( int i = 0 ; i < users.size() ; i++ ) {
+			if(user.getUserId() == users.get(i).getUserId()) {
+				users.set(i, user);
+			}
+		}
+		return new Result();
+	}
+
+	class Result {
+		private boolean success = true;
+
+		public boolean isSuccess() {
+			return success;
+		}
+
+		public void setSuccess(boolean success) {
+			this.success = success;
+		}
 	}
 
 

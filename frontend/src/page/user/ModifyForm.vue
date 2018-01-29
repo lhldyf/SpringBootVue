@@ -48,7 +48,8 @@
       ...mapState('user', {
         visible: state => state.visibleDialog === USER.DIALOG.MODIFY,
         modifyForm: state => {
-          return {...state.modifyData, ...{sex: state.modifyData.sex.code}} // copy
+          return {...state.modifyData} // copy
+          // return {...state.modifyData, ...{sex: state.modifyData.sex.code}} // copy
         }
       })
     },

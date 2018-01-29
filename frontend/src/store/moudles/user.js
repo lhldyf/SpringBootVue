@@ -31,7 +31,7 @@ const getters = {
   },
   pageSize: state => {
     if(null != state.listResult.page) {
-      return state.listResult.page.currentPage;
+      return state.listResult.page.pageSize;
     } else {
       return 0;
     }
@@ -62,7 +62,7 @@ const actions = {
   handleCurrentChange({dispatch}, currentPage) {
     dispatch('queryList', {currentPage});
   },
-  create({dispatch, commit}, createForm) {
+  createUser({dispatch, commit}, createForm) {
     createUser(createForm, result => {
       if(result.success) {
         commit('invisibleDialog');

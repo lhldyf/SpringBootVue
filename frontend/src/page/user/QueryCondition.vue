@@ -6,10 +6,6 @@
         <el-input placeholder="请输入用户id" v-model="queryForm.userId" type="text" :maxlength="11"></el-input>
       </el-form-item>
 
-      <el-form-item label="用户名">
-        <el-input placeholder="请输入用户名" v-model="queryForm.userName" type="text"></el-input>
-      </el-form-item>
-
       <el-form-item label="性别">
         <el-select v-model="queryForm.sex">
           <el-option v-for="item in sexOptions"
@@ -45,16 +41,7 @@
         queryForm: {
 
         },
-        sexOptions: [
-          {
-            value: 'female',
-            label: '女'
-          },
-          {
-            value: 'male',
-            label: '男'
-          }
-        ],
+        sexOptions: [ {value:'', label:'全部'}, ...USER.SEX_OPTIONS],
         CREATE_DIALOG: USER.DIALOG.CREATE
       }
     },

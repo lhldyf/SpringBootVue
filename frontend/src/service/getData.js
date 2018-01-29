@@ -1,6 +1,6 @@
-// import {postApi} from '../config/axiosUtils'
+import {postApi} from '../config/axiosUtils'
 import * as urls from '../config/urlConsts'
-import {postApi} from './mockGetData'
+//import {postApi} from './mockGetData'
 
 export const queryUserList = ( request, callback ) => {
   postApi(urls.QUERY_USER_LIST, request, callback);
