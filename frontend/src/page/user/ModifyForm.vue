@@ -41,21 +41,26 @@
   export default{
     data() {
       return {
-        sexOptions: USER.SEX_OPTIONS
+        sexOptions: USER.SEX_OPTIONS,
+        modifyForm: {
+          sex: null
+        }
       }
     },
     computed: {
       ...mapState('user', {
         visible: state => state.visibleDialog === USER.DIALOG.MODIFY,
-        modifyForm: state => {
-          return {...state.modifyData} // copy
-          // return {...state.modifyData, ...{sex: state.modifyData.sex.code}} // copy
-        }
+        modifyData: 'modifyData'
       })
     },
     methods: {
       ...mapMutations('user', ['invisibleDialog']),
       ...mapActions('user', ['modifyUser']),
+    },
+    watch: {
+      modifyData: function(val) {
+        this.modifyForm = {...val};
+      }
     }
   }
 </script>
