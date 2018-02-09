@@ -1,0 +1,11 @@
+.el-pagination {
+  float: right;
+}
+
+.el-form-item__label, .el-input, .el-button,.el-textarea__inner,.el-table, .el-select-dropdown__item  {
+  font-size: 12px;
+}
+
+.el-pagination button, .el-pagination span {
+  font-size: 12px;
+}

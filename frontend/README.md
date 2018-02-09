@@ -2,7 +2,24 @@
 
 ```
 vue init webpack
-npm i vue-resource vue-router vuex element-ui
+
+? Generate project in current directory? Yes
+  A newer version of vue-cli is available.
+
+  latest:    2.9.3
+  installed: 2.8.2
+
+? Project name vue-test
+? Project description A Vue.js project
+? Author lhldyf <lhldyf45@gmail.com>
+? Vue build standalone
+? Install vue-router? Yes
+? Use ESLint to lint your code? No
+? Set up unit tests No
+? Setup e2e tests with Nightwatch? No
+? Should we run `npm install` for you after the project has been created? (recommended) npm
+
+npm i vuex element-ui --save
 
 ```
 
